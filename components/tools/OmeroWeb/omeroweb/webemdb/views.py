@@ -1106,3 +1106,18 @@ def image_viewer (request, iid, **kwargs):
     kwargs['viewport_server'] = '/webclient'
     
     return webgateway_views.full_viewer(request, iid, _conn=conn, **kwargs)
+
+def sliceviewer (request, emdb_entry, **kwargs):
+    
+    conn = getConnection(request)
+    
+    image_name = "emd_%s.map" % emdb_entry
+    image = conn.getObject("Image", attributes={'name': image_name})
+    
+    if image is None:
+        logger.debug('sliceviewer: No Image named %s' % image_name)
+        raise Http404
+        
+    kwargs['template'] = 'webemdb/browse/sliceviewer.html'
+    return webgateway_views.full_viewer(request, image.id, _conn=conn, **kwargs)
+    
