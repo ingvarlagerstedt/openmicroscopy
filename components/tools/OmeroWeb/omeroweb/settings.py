@@ -307,7 +307,7 @@ INSTALLED_APPS = (
     'omeroweb.webclient',
     'omeroweb.webgateway',
     'omeroweb.webtest',
-    #'omeroweb.webemdb',
+    'omeroweb.webemdb',
     'omeroweb.webmobile',
     'omeroweb.webpublic',
     'omeroweb.webredirect',
