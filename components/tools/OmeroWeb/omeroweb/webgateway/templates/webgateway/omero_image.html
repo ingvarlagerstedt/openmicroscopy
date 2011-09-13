@@ -306,6 +306,8 @@
     syncRDCW();
         
     $('#wblitz-workarea > .box > div.row').show();
+
+    {% block after_callback %}{% endblock after_callback %}
   };
 
   /**

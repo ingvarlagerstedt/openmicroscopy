@@ -214,16 +214,16 @@
     $('#wblitz-image-z-count').html(tmp.z);
     $('#wblitz-image-t-count').html(tmp.t);
     tmp = viewport.getPixelSizes();
-    $('#wblitz-image-pixel-size-x').html(tmp.x==0?'-':(tmp.x.toFixed(4) + '&micro;m'));
-    $('#wblitz-image-pixel-size-y').html(tmp.y==0?'-':(tmp.y.toFixed(4) + '&micro;m'));
-    $('#wblitz-image-pixel-size-z').html(tmp.z==0?'-':(tmp.z.toFixed(4) + '&micro;m'));
+    $('#wblitz-image-pixel-size-x').html(tmp.x==0?'-':(tmp.x.toFixed(4) + ' Angstroms'));
+    $('#wblitz-image-pixel-size-y').html(tmp.y==0?'-':(tmp.y.toFixed(4) + ' Angstroms'));
+    $('#wblitz-image-pixel-size-z').html(tmp.z==0?'-':(tmp.z.toFixed(4) + ' Angstroms'));
 
     /* Fill in the Rendering Details box */
 
     $(".picker").unbind('prepared').unbind('showing').unbind('hiding');
     $('#rdef-postit ul').not('ul:last-child').remove();
 
-    var template = '<tr class="$cls">'
+    var template = '<tr class="$cls" style="display:none">'
       + '<td><input id="rd-wblitz-ch$idx0" type="checkbox" onchange="rdChanSelHelper(this)" $act></td>'
       + '<td>$cwl</td>'
       + '<td><button id="wblitz-ch$idx0-color" class="picker squarred">&nbsp;</button></td>'
@@ -739,7 +739,7 @@
       <div>
         <table cellspacing="0">
           <tr class="odd"><td class="title">Image name:&nbsp;</td><td id="wblitz-image-name"></td></tr>
-          <tr class="even"><td class="title">Owner:&nbsp;</td><td id="wblitz-image-author"></td></tr>
+          <tr class="even" style="display:none"><td class="title">Owner:&nbsp;</td><td id="wblitz-image-author"></td></tr>
           <!--
           <tr class="odd"><td class="title">Publication:&nbsp;</td><td id="wblitz-image-pub"></td></tr>
           <tr class="even"><td class="title">Publication ID:&nbsp;</td><td id="wblitz-image-pubid"></td></tr>
@@ -755,18 +755,18 @@
             <th colspan="2">Pixel Size</th>
           </tr>
           <tr class="odd">
-            <td class="title">X:&nbsp;</td><td><span id="wblitz-image-width"></span>px</td>
+            <td class="title">X:&nbsp;</td><td><span id="wblitz-image-width"></span></td>
             <td class="title">X:&nbsp;</td><td><span id="wblitz-image-pixel-size-x"></span></td>
           </tr>
           <tr class="even">
-            <td class="title">Y:&nbsp;</td><td><span id="wblitz-image-height"></span>px</td>
+            <td class="title">Y:&nbsp;</td><td><span id="wblitz-image-height"></span></td>
             <td class="title">Y:&nbsp;</td><td><span id="wblitz-image-pixel-size-y"></span></td>
           </tr>
           <tr class="odd">
             <td class="title">Z:&nbsp;</td><td><span id="wblitz-image-z-count"></span></td>
             <td class="title">Z:&nbsp;</td><td><span id="wblitz-image-pixel-size-z"></span></td>
           </tr>
-          <tr class="even">
+          <tr class="even" style='display:none'>
             <td class="title">T:&nbsp;</td><td><span id="wblitz-image-t-count"></span></td>
             <td colspan="2"></td>
           </tr>
@@ -779,14 +779,12 @@
     <div id="rdef-postit" class="postit" style="width: 480px">
       <h1> Rendering Details </h1>
         <div id="rdef-active-area">
-        <a id="rdef-postit-help" href="#" onclick="return showChannelWindowHelp();"><img src="/appmedia/webgateway/img/question.png" alt="Show help on channel window ranges" /></a>
-        <label for="rd-wblitz-rmodel">Render as Color</label>
-        <input id="rd-wblitz-rmodel" type="checkbox" onchange="return rdChanSelHelper(this);" />
+        <input id="rd-wblitz-rmodel" type="checkbox" onchange="return rdChanSelHelper(this);" style='display:none'/>
         <table cellspacing="0">
           <tr>
-            <th>Visible</th>
-            <th>Wavelength</th>
-            <th>Color</th>
+            <th></th>
+            <th></th>
+            <th></th>
             <th></th>
           </tr>
         </table>
@@ -830,7 +828,7 @@
               Max Intensity
               <input type="radio" value="intmax" name="wblitz-proj" onclick="return setProjection(this);" />
             </div>
-            <div class="multiselect">
+            <div class="multiselect" style="display:none">
               Split Channel
               <input type="radio" value="split" name="wblitz-proj" onclick="return setProjection(this);" />
             </div>
@@ -878,12 +876,12 @@
           </div>
           <h1>Rendering Details</h1>
           <div class="odd row">
-            <label for="wblitz-channels-box">Channels</label> - <a href="#" onclick="$('#rdef-postit').toggle(); return false;">Edit</a><br />
-            <span id="wblitz-channels-box"></span>
+            <a href="#" onclick="$('#rdef-postit').toggle(); return false;">Edit Rendering</a><br />
+            <span id="wblitz-channels-box" style='display:none'></span>
           </div>
           <div class="even row">
-            <label for="wblitz-rmodel">Color</label>
-            <input id="wblitz-rmodel" type="checkbox" onclick="viewport.setModel(this.checked?'c':'g');" />
+            <label for="wblitz-rmodel" style='display:none'>Color</label>
+            <input id="wblitz-rmodel" type="checkbox" onclick="viewport.setModel(this.checked?'c':'g');" style='display:none'/>
 	    {% if not blitzcon.isAnonymous and image.canWrite %}
 	    <br />
             <label for="wblitz-invaxis">Invert Z/T Axis</label>
@@ -895,8 +893,8 @@
           <div class="even row">
             <span style="font-size: 0.9em">
             <!--<span id="wblitz-shortname" style="white-space: nowrap;"></span><br />-->
-            Z: <span id="wblitz-z-curr">?</span>/<span id="wblitz-z-count">?</span> |
-            T: <span id="wblitz-t-curr">1</span>/<span id="wblitz-t-count">1</span>
+            Z: <span id="wblitz-z-curr">?</span>/<span id="wblitz-z-count">?</span>
+            <span style='display:none'><span id="wblitz-t-curr">1</span>/<span id="wblitz-t-count">1</span></span>
             </span>
           </div>
           <div class="odd row">
@@ -910,7 +908,7 @@
             </a><br />
           </div>
 {% block roi_buttons %}
-          <div id="roi_controls">
+          <div id="roi_controls" style='display:none'>
                 ROIs:
                 <a href="#" onclick="show_rois()">Show</a> |
                 <a href="#" onclick="hide_rois()">Hide</a>
