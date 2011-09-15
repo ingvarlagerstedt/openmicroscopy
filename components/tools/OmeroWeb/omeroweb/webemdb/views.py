@@ -1089,7 +1089,7 @@ def getConnection(request):
         request.session['host'] = blitz.host
         request.session['port'] = blitz.port
         request.session['password'] = "ome"
-        request.session['username'] = "emdb-public"
+        request.session['username'] = "emdb"
         request.session['processors'] = {}
         request.session.modified = True
         conn = getBlitzConnection (request, useragent="OMERO.webemdb")
