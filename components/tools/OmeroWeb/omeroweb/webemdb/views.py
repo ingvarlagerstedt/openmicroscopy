@@ -1074,6 +1074,12 @@ def getConnection(request):
             logger.debug('emdb connection:  %s' % conn._sessionUuid)
     if conn == None:
         # session has timed out. Need to logout and log in again. 
+        if not hasattr(settings, "EMDB_PUBLIC_USERNAME") or settings.EMDB_PUBLIC_USERNAME is None:
+            raise AttributeError("You need to set a username for public EMDB user: $ bin/omero config set omero.web.emdb_public_username <username>")
+        if not hasattr(settings, "EMDB_PUBLIC_PASSWORD") or settings.EMDB_PUBLIC_PASSWORD is None:
+            raise AttributeError("You need to set a password for public EMDB user: $ bin/omero config set omero.web.emdb_public_password <password>")
+        username = settings.EMDB_PUBLIC_USERNAME
+        password = settings.EMDB_PUBLIC_PASSWORD
         try:
             _session_logout(request, request.session['server'])
         except:
@@ -1088,8 +1094,8 @@ def getConnection(request):
         request.session['server'] = blitz.id
         request.session['host'] = blitz.host
         request.session['port'] = blitz.port
-        request.session['password'] = "ome"
-        request.session['username'] = "emdb"
+        request.session['password'] = password
+        request.session['username'] = username
         request.session['processors'] = {}
         request.session.modified = True
         conn = getBlitzConnection (request, useragent="OMERO.webemdb")
