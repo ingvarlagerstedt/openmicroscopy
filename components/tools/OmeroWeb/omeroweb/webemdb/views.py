@@ -1124,6 +1124,6 @@ def sliceviewer (request, emdb_entry, **kwargs):
         logger.debug('sliceviewer: No Image named %s' % image_name)
         raise Http404
         
-    kwargs['template'] = 'webemdb/browse/sliceviewer2.html'
+    kwargs['template'] = 'webemdb/browse/sliceviewer.html'
     return webgateway_views.full_viewer(request, image.id, _conn=conn, **kwargs)
     
