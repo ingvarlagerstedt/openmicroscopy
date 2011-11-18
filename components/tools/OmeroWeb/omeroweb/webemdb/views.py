@@ -8,6 +8,7 @@ from django.core.cache import cache
 
 from omeroweb.webgateway.views import getBlitzConnection, _session_logout
 from omeroweb.webgateway import views as webgateway_views
+from omeroweb.feedback.views import handlerInternalError
 import settings
 import logging
 import traceback
@@ -76,18 +77,22 @@ def eman(request, imageId, **kwargs):
         else:     em.process_inplace("eman1.filter.median") 
     elif f == "log":
         em.process_inplace("math.log")
-    
-    tempdir = settings.FILE_UPLOAD_TEMP_DIR
-    tempJpg = os.path.join(tempdir, ('%s.emanFilter.jpg' % (conn._sessionUuid))).replace('\\','/')
-    
-    em.write_image(tempJpg)
-    
-    originalFile_data = FileWrapper(file(tempJpg))
-        
-    rsp = HttpResponse(originalFile_data)
-           
-    rsp['Content-Type'] = "image/jpg"
-    
+
+    # write jpeg to temp file
+    import tempfile
+    temp = tempfile.NamedTemporaryFile(suffix='.jpeg')
+    try:
+        em.write_image(temp.name)
+        logger.debug("EMAN2 filter jpeg: %r" % {'name':temp.name, 'size':os.path.getsize(temp.name)})
+        originalFile_data = FileWrapper(temp)
+        rsp = HttpResponse(originalFile_data)
+        rsp['Content-Type'] = "image/jpg"
+        #rsp['Content-Length'] = temp.tell()    # temp.tell() seems to be 0
+        temp.seek(0)
+    except Exception, x:
+        temp.close()
+        logger.error(traceback.format_exc())
+        return handlerInternalError("Cannot generate EMAN2 filter (id:%s)." % (imageId))
     return rsp
 
 
@@ -311,13 +316,22 @@ def dataset_stack(request, datasetId):
             em = EMData(sizeY, sizeX, sizeZ)    # x,y,z or y,x,z ?
             
         em.insert_clip(e,(0,0,z))
-     
-    tempdir = settings.FILE_UPLOAD_TEMP_DIR
-    tempMrc = os.path.join(tempdir, ('%sdataset_stack.mrc' % (conn._sessionUuid))).replace('\\','/')
-    em.write_image(tempMrc)
+
+    # write data to temp file
+    import tempfile
+    temp = tempfile.NamedTemporaryFile(suffix='.mrc')
+    try:
+        em.write_image(temp.name)
+        logger.debug("EMAN2 dataset download: %r" % {'name':temp.name, 'size':os.path.getsize(temp.name)})
+        originalFile_data = FileWrapper(temp)
+        rsp = HttpResponse(originalFile_data)
+        rsp['Content-Length'] = os.path.getsize(temp.name)
+        temp.seek(0)
+    except Exception, x:
+        temp.close()
+        logger.error(traceback.format_exc())
+        return handlerInternalError("Cannot download dataset as EMAN2 (id:%s)." % (datasetId))
     
-    originalFile_data = FileWrapper(file(tempMrc))
-    rsp = HttpResponse(originalFile_data)
     rsp['Content-Type'] = 'application/octet-stream'
     # this tells the browser to give the user a 'download' dialog
     rsp['Content-Disposition'] = 'attachment; filename=%s.mrc' % (dataset.getName().replace(" ","_"))
@@ -437,26 +451,29 @@ def projection_axis(request, imageId, axis, get_slice=False):
                 proj = slice_y
             else:
                 proj = proj_y
-    
-    #print "got 2D plane...", proj.shape
-    #print "    %s secs" % (time.time() - startTime)
-        
-    tempdir = settings.FILE_UPLOAD_TEMP_DIR
-    tempJpg = os.path.join(tempdir, ('%s.projection.jpg' % (conn._sessionUuid))).replace('\\','/')
-    
+
     #import matplotlib.pyplot as plt
     #plt.savefig(tempJpg)
     
     #import scipy
     #scipy.misc.imsave(tempJpg, proj)
-    
+
     em = EMNumPy.numpy2em(proj)
-    em.write_image(tempJpg)
-    
-    originalFile_data = FileWrapper(file(tempJpg))
-    rsp = HttpResponse(originalFile_data)
-    rsp['Content-Type'] = "image/jpg"
-    
+
+    # write data to temp jpeg
+    import tempfile
+    temp = tempfile.NamedTemporaryFile(suffix='.jpg')
+    try:
+        em.write_image(temp.name)
+        logger.debug("EMAN2 xyz projection: %r" % {'name':temp.name, 'size':os.path.getsize(temp.name)})
+        originalFile_data = FileWrapper(temp)
+        rsp = HttpResponse(originalFile_data)
+        rsp['Content-Type'] = "image/jpg"
+        temp.seek(0)
+    except Exception, x:
+        temp.close()
+        logger.error(traceback.format_exc())
+        return handlerInternalError("Failed xyz projection (id:%s)." % (imageId))
     return rsp
     
     
@@ -748,26 +765,26 @@ def getFile (request, fileId):
         # return HttpResponse(file_data, mimetype=mimetype)
         
         # if the file data is large, we will have a temp file
-        tempdir = settings.FILE_UPLOAD_TEMP_DIR
-        temp = os.path.join(tempdir, ('%i-%s.download' % (ann.file.id.val, conn._sessionUuid))).replace('\\','/')
-        logger.info("temp path: %s" % str(temp))
-        f = open(str(temp),"wb")
-        for piece in ann.getFileInChunks():
-            f.write(piece)
-        f.seek(0)
-        f.close()
-        
-        originalFile_data = FileWrapper(file(temp))
-            
-        rsp = HttpResponse(originalFile_data)
-               
-        rsp['Content-Type'] = mimetype
-        rsp['Content-Length'] = ann.getFileSize()
+        import tempfile
+        temp = tempfile.NamedTemporaryFile(suffix='.fileAnn')
+        try:
+            for piece in ann.getFileInChunks():
+                temp.write(piece)
+            temp.seek(0)
+            logger.debug("download file: %r" % {'name':temp.name, 'fileName':fileName, 'size':os.path.getsize(temp.name)})
+            originalFile_data = FileWrapper(temp)
+            rsp = HttpResponse(originalFile_data)
+            rsp['Content-Type'] = mimetype
+            rsp['Content-Length'] = os.path.getsize(temp.name)
+        except Exception, x:
+            temp.close()
+            logger.error(traceback.format_exc())
+            return handlerInternalError("Failed to access file (id:%s)." % (fileId))
+
         # this tells the browser to give the user a 'download' dialog
         rsp['Content-Disposition'] = 'attachment; filename=%s' % (ann.getFileName().replace(" ","_"))
-            
         return rsp
-        
+
     return HttpResponse()
     
 
