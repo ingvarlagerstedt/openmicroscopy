@@ -57,8 +57,11 @@ def eman(request, imageId, **kwargs):
     
     theZ, theC, theT = (0,0,0)
     bypassOriginalFile = True
-    rawPixelStore.setPixelsId(pixels.getId().getValue(), bypassOriginalFile)
-    plane2D = scriptUtil.downloadPlane(rawPixelStore, pixels, theZ, theC, theT)
+    try:
+        rawPixelStore.setPixelsId(pixels.getId().getValue(), bypassOriginalFile)
+        plane2D = scriptUtil.downloadPlane(rawPixelStore, pixels, theZ, theC, theT)
+    finally:
+        rawPixelStore.close()
     
     sizeX = pixels.getSizeX().getValue()
     sizeY = pixels.getSizeY().getValue()
@@ -308,16 +311,19 @@ def dataset_stack(request, datasetId):
     dataset = conn.getObject("Dataset", datasetId)
     
     em = None
-    for z, i in enumerate(dataset.listChildren()):
-        plane =  getImagePlane(i.getId())
-        e = EMNumPy.numpy2em(plane)
+    try:
+        for z, i in enumerate(dataset.listChildren()):
+            plane =  getImagePlane(i.getId())
+            e = EMNumPy.numpy2em(plane)
         
-        if em == None:
-            sizeY, sizeX = plane.shape
-            sizeZ = dataset.countChildren()
-            em = EMData(sizeY, sizeX, sizeZ)    # x,y,z or y,x,z ?
+            if em == None:
+                sizeY, sizeX = plane.shape
+                sizeZ = dataset.countChildren()
+                em = EMData(sizeY, sizeX, sizeZ)    # x,y,z or y,x,z ?
             
-        em.insert_clip(e,(0,0,z))
+            em.insert_clip(e,(0,0,z))
+    finally:
+        rawPixelStore.close()
 
     # write data to temp file
     import tempfile
@@ -400,10 +406,12 @@ def projection_axis(request, imageId, axis, get_slice=False):
         # create a 3D numpy array, and populate it with data
         cube = zeros( (sizeZ,sizeY,sizeX) )
         theC, theT = (0,0)
-        for theZ in range(sizeZ):
-            plane2D = scriptUtil.downloadPlane(rawPixelStore, pixels, theZ, theC, theT)
-            cube[sizeZ-theZ-1] = plane2D
-            
+        try:
+            for theZ in range(sizeZ):
+                plane2D = scriptUtil.downloadPlane(rawPixelStore, pixels, theZ, theC, theT)
+                cube[sizeZ-theZ-1] = plane2D
+        finally:
+            rawPixelStore.close()
         # do the 3 projections and 3 central slices while we have the cube - save projections, not cube
         #print "doing projection"
         #print "    %s secs" % (time.time() - startTime)
