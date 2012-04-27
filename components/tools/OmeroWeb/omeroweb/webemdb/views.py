@@ -1141,16 +1141,23 @@ def image_viewer (request, iid, **kwargs):
     return webgateway_views.full_viewer(request, iid, _conn=conn, **kwargs)
 
 def sliceviewer (request, emdb_entry, **kwargs):
-    
+    """ We need handle one, multiple, and no match on the image_name """
+
     conn = getConnection(request)
     
     image_name = "emd_%s.map" % emdb_entry
-    image = conn.getObject("Image", attributes={'name': image_name})
-    
+    images = conn.getObjects("Image", attributes={'name': image_name})
+
+    id = -1
+    image = None
+    for image in images:
+        if image.getId() > id: 
+            id = image.getId()
+        
     if image is None:
         logger.debug('sliceviewer: No Image named %s' % image_name)
         raise Http404
-        
+
     kwargs['template'] = 'webemdb/browse/sliceviewer.html'
     return webgateway_views.full_viewer(request, image.id, _conn=conn, **kwargs)
     
