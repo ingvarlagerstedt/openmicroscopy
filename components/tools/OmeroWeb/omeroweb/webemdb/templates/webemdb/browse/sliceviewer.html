@@ -23,6 +23,10 @@
 {% block after_onload %}
 // We can do some customizing as soon as the html has loaded...
 
+// Add logo to the top left
+var logo = "<img style='padding:10px' src='{% url webemdb 'images/ebi.png' %}' />";
+$('#wblitz-workarea').prepend(logo);
+
 // 'Render as Color' option
 $('#rdef-active-area [for="rd-wblitz-rmodel"]').hide();
 $('#rd-wblitz-rmodel').hide();
