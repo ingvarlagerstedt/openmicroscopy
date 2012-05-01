@@ -69,5 +69,5 @@ urlpatterns = patterns('',
     #url( r'^script_results/(?P<jobId>[0-9]+)/$', views.script_results, name='webemdb_script_results' ),
     
     # tomogram viewer (customised Image Viewer for single T and C)
-    url( r'^(?P<emdb_entry>[0-9]+)_sliceviewer/$', views.sliceviewer, name='webemdb_sliceviewer' ),
+    url( r'^(?P<emdb_entry>\d{4})_sliceviewer/$', views.sliceviewer, name='webemdb_sliceviewer' ),
 )
