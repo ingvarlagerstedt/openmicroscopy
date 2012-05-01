@@ -1,0 +1,31 @@
+/**
+ * slice viewer style definitions overriding 
+ *   omero_image.css and weblitz-viewport.css
+ * 
+ * Copyright (c) 2007, 2008 Glencoe Software, Inc. All rights reserved.
+ * 
+ * This software is distributed under the terms described by the LICENCE file
+ * you can find at the root of the distribution bundle, which states you are
+ * free to use it only for non commercial purposes.
+ * If the file is missing please request a copy by contacting
+ * jason@glencoesoftware.com.
+ */
+
+.chan-window-slider { 
+  position: relative;
+  display: block;
+  height: 15px;
+  clear: both;
+}
+
+INPUT.changed { 
+  background-color: #FFFFFF;
+}
+
+.weblitz-viewport-bot {
+  display: none;
+}
+
+.slider-line {
+  background: #A0A0A0;
+}
