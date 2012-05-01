@@ -1711,7 +1711,8 @@ def full_viewer (request, iid, server_id=None, _conn=None, **kwargs):
              'image': image,
              'opts': rid,
              'viewport_server': kwargs.get('viewport_server', '/webgateway'),
-             'object': 'image:%i' % int(iid)}
+             'object': 'image:%i' % int(iid),
+             'emdbId': kwargs.get('emdbId', '1051')}
 
         template = kwargs.get('template', "webgateway/omero_image.html")
         t = template_loader.get_template(template)
