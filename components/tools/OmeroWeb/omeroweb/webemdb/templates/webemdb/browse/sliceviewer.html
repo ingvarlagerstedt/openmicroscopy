@@ -23,6 +23,69 @@
 Slice Viewer EMD-{{ emdbId }}
 {% endblock %}
 
+{% block extra_css %}
+{{ block.super }}
+    <link rel="stylesheet" href="/appmedia/webgateway/css/sliceviewer.css" type="text/css" media="all" />
+{% endblock %}
+
+{% block syncRDCW %}
+  function syncRDCW() {
+    var cb;
+    var channels = viewport.getChannels();
+    for (i in channels) {
+      $('#rd-wblitz-ch'+i).get(0).checked = channels[i].active;
+      $('#wblitz-ch'+i+'-cwslider .ui-slider-range').css('background-color', '#A0A0A0');
+      $('#wblitz-ch'+i+'-color').css('background-color', toRGB(channels[i].color));
+      $('#wblitz-ch'+i+'-cw-start').val(channels[i].window.start).change();
+      $('#wblitz-ch'+i+'-cw-end').val(channels[i].window.end).change();
+    }
+    hidePicker();
+    $('#rdef-undo-btn').attr('disabled',viewport.has_channels_undo()?'':'true');
+    $('#rdef-redo-btn').attr('disabled',viewport.has_channels_redo()?'':'true');
+    //$('#rdef-default-btn').attr('disabled',viewport.has_channels_undo()?'':'true');
+    $('#rd-wblitz-rmodel').attr('checked', !viewport.isGreyModel());
+  }
+{% endblock syncRDCW %}
+
+{% comment %}
+<!-- We want px along all three axes -->
+{% endcomment %}
+{% block dimensions %}
+      <h3 class="can-collapse"> Dimensions </h3>
+      <div class="dimensions">
+        <table cellspacing="0">
+          <tr>
+            <th colspan="2" width="50%">Image Size</th>
+            <th colspan="2">Pixel Size</th>
+          </tr>
+          <tr class="odd">
+            <td class="title">X:&nbsp;</td><td><span id="wblitz-image-width"></span>px</td>
+            <td class="title">X:&nbsp;</td><td><span id="wblitz-image-pixel-size-x"></span></td>
+          </tr>
+          <tr class="even">
+            <td class="title">Y:&nbsp;</td><td><span id="wblitz-image-height"></span>px</td>
+            <td class="title">Y:&nbsp;</td><td><span id="wblitz-image-pixel-size-y"></span></td>
+          </tr>
+          <tr class="odd">
+            <td class="title">Z:&nbsp;</td><td><span id="wblitz-image-z-count"></span>px</td>
+            <td class="title">Z:&nbsp;</td><td><span id="wblitz-image-pixel-size-z"></span></td>
+          </tr>
+          <tr class="even">
+            <td class="title">T:&nbsp;</td><td><span id="wblitz-image-t-count"></span></td>
+            <td colspan="2"></td>
+          </tr>
+        </table>
+      </div>
+{% endblock dimensions %}
+
+{% block image_viewport %}
+        <!-- Image Viewport No T-axis-->
+        <div id="weblitz-viewport"></div> 
+        <img id="z-axis-legend" src="/appmedia/webgateway/img/z_axis.gif" />
+        <div class="figure-box-holder">
+        </div>
+{% endblock image_viewport %}
+
 {% block after_onload %}
 // We can do some customizing as soon as the html has loaded...
 

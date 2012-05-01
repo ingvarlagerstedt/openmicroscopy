@@ -549,6 +549,7 @@
     syncRDCW();
   }
 
+{% block syncRDCW %}
   function syncRDCW() {
     var cb;
     var channels = viewport.getChannels();
@@ -565,6 +566,7 @@
     //$('#rdef-default-btn').attr('disabled',viewport.has_channels_undo()?'':'true');
     $('#rd-wblitz-rmodel').attr('checked', !viewport.isGreyModel());
   }
+{% endblock syncRDCW %}
 
   function undoRDCW () {
     viewport.undo_channels();
@@ -749,6 +751,7 @@
           -->
         </table>
       </div>
+{% block dimensions %}
       <h3 class="can-collapse"> Dimensions </h3>
       <div class="dimensions">
         <table cellspacing="0">
@@ -774,6 +777,7 @@
           </tr>
         </table>
       </div>
+{% endblock dimensions %}
       <!--<h3 class="can-collapse defclose"> Legend </h3>
       <div id="wblitz-image-description"><span id="wblitz-image-description-content"></span></div>-->
     </div>
@@ -922,13 +926,14 @@
 {% endblock roi_buttons %}
           {% block current_image_tools %}{% endblock %}
         </div>
-            
+{% block image_viewport %}
         <!-- Image Viewport -->
         <div id="weblitz-viewport"></div>
         <img id="z-axis-legend" src="/appmedia/webgateway/img/z_axis.gif" />
         <img id="t-axis-legend" src="/appmedia/webgateway/img/t_axis.gif" />
         <div class="figure-box-holder">
         </div>
+{% endblock image_viewport %}
       </div>
     </div>
     <div id="footer">
