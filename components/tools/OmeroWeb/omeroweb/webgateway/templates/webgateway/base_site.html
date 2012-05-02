@@ -19,6 +19,7 @@
     <link rel="shortcut icon" href="{% block favicon_href %}/appmedia/webgateway/img/favicon.ico{% endblock %}" type="image/x-icon" />
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta http-equiv="imagetoolbar" content="no" />
+    {% block extra_meta %}{% endblock extra_meta %}
     <link rel="SHORTCUT ICON" href="/media/favicon.ico" />    <link rel="SHORTCUT ICON" href="/media/favicon.ico" />
     <title>{% block title %}{% endblock %}</title>
     {% block css %}
