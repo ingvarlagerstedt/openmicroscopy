@@ -29,3 +29,22 @@ INPUT.changed {
 .slider-line {
   background: #A0A0A0;
 }
+
+#header {
+  display: none;
+  height: 1px;
+}
+
+#footer {
+  display: none;
+  height: 1px;
+}
+
+#t-axis-legend {
+  display: none;
+  height: 1px;
+}
+
+#curr-link {
+  displat: none;
+}

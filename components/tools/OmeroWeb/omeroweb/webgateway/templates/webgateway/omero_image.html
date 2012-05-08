@@ -888,7 +888,7 @@
             <td class="title">Y:&nbsp;</td><td><span id="wblitz-image-pixel-size-y"></span></td>
           </tr>
           <tr class="odd">
-            <td class="title">Z:&nbsp;</td><td><span id="wblitz-image-z-count"></span></td>
+            <td class="title">Z:&nbsp;</td><td id="z-count-label"><span id="wblitz-image-z-count"></span></td>
             <td class="title">Z:&nbsp;</td><td><span id="wblitz-image-pixel-size-z"></span></td>
           </tr>
           <tr class="even">
@@ -1029,7 +1029,7 @@
           <div class="odd row">
             <a href="#" onclick="$('#metadata-postit').toggle(); return false;">Image Information</a><br />
           </div>
-          <div class="even row">
+          <div id="imageViewLink" class="even row">
                       <a href="#" onmouseover="this.href=viewport.getUrl('img_detail')"
                onclick="$('#curr-link input').attr('value', location.href.substring(0,location.href.length - location.search.length).replace(/(.*?\/)\d+(?:\/\d+)?(?:\/)?$/,'$1') + viewport.getCurrentImgUrlPath() +'?'+ viewport.getQuery(true));
                         show_tooltip(this, 'curr-link'); return false;">
