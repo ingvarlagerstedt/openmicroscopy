@@ -46,5 +46,9 @@ INPUT.changed {
 }
 
 #curr-link {
-  displat: none;
+  display: none;
+}
+
+.viewStatus {
+  font-size: 10px;
 }

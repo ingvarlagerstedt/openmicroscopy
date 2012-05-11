@@ -760,6 +760,34 @@ jQuery._WeblitzViewport = function (container, server, options) {
     _this.viewportimg.get(0).setZoomToFit(only_shrink, size.width,size.height);
   }
 
+  this.getViewportSizes = function() {
+    // Calculate currently displayed area in pixel and real dimensions
+    var zoom = _this.viewportimg.get(0).getZoom(); // _this.getZoom() not in sync
+    var px = _this.getPixelSizes();
+    var sz = getSizeDict();
+    var w2 = _this.viewportimg.width() / (zoom * 0.01);
+    var h2 = _this.viewportimg.height() / (zoom * 0.01);
+
+    if (w2 < sz.width) {
+      rv.wp = w2;
+    } else {
+      rv.wp = sz.width;
+    }
+    if (h2 < sz.height) {
+      rv.hp = h2;
+    } else {
+      rv.hp = sz.height;
+    }
+    rv.wr = rv.wp * px.x;
+    rv.hr = rv.hp * px.y;
+    rv.w2 = w2;
+    rv.h2 = h2;
+    rv.w3 = sz.width;
+    rv.h3 = sz.height;
+    rv.zoom = zoom;
+    return rv;
+  }
+     
   /*                       */
   /*************************/
 

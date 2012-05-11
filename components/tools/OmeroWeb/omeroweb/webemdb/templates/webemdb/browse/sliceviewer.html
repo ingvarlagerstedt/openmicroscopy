@@ -26,23 +26,6 @@
 
 {% block after_onload %}
 // We can do some customizing as soon as the html has loaded...
-// Override function to avoid bright red background color.
-  function syncRDCW() {
-    var cb;
-    var channels = viewport.getChannels();
-    for (i in channels) {
-      $('#rd-wblitz-ch'+i).get(0).checked = channels[i].active;
-      $('#wblitz-ch'+i+'-cwslider .ui-slider-range').css('background-color', '#A0A0A0');
-      $('#wblitz-ch'+i+'-color').css('background-color', toRGB(channels[i].color));
-      $('#wblitz-ch'+i+'-cw-start').val(channels[i].window.start).change();
-      $('#wblitz-ch'+i+'-cw-end').val(channels[i].window.end).change();
-    }
-    hidePicker();
-    $('#rdef-undo-btn').attr('disabled',viewport.has_channels_undo()?'':'true');
-    $('#rdef-redo-btn').attr('disabled',viewport.has_channels_redo()?'':'true');
-    //$('#rdef-default-btn').attr('disabled',viewport.has_channels_undo()?'':'true');
-    $('#rd-wblitz-rmodel').attr('checked', !viewport.isGreyModel());
-  }
 {% comment %}
 - skipping the logo, as we go for an iframe solution instead
 // Add logo to the top left
@@ -85,22 +68,33 @@ $('#imageViewLink').hide();
 // ...more edits AFTER image info has been used to create rendering controls etc. 
 
 tmp = viewport.getPixelSizes();
-$('#wblitz-image-pixel-size-x').html(tmp.x==0?'-':(tmp.x.toFixed(4) + ' Angstroms'));
-$('#wblitz-image-pixel-size-y').html(tmp.y==0?'-':(tmp.y.toFixed(4) + ' Angstroms'));
-$('#wblitz-image-pixel-size-z').html(tmp.z==0?'-':(tmp.z.toFixed(4) + ' Angstroms'));
+$('#wblitz-image-pixel-size-x').html(tmp.x==0?'-':(tmp.x.toFixed(4) + ' &Aring;'));
+$('#wblitz-image-pixel-size-y').html(tmp.y==0?'-':(tmp.y.toFixed(4) + ' &Aring;'));
+$('#wblitz-image-pixel-size-z').html(tmp.z==0?'-':(tmp.z.toFixed(4) + ' &Aring;'));
 
 // hide the channel toggle, colour picker etc. from rdef-postit
 $('#rdef-postit table tr').hide()
 $('#rdef-postit table tr.rdef-window').show();
 
 $('#wblitz-rmodel').parent().hide();  // color toggle - hide again in case it got shown
-{% comment %}
-<td id="z-count-label"><span id="wblitz-image-z-count"></span></td>
-$('#z-count-label').html('px');
-{% endcomment %}
 iSize = viewport.getSizes();
 $('#z-count-label').html(iSize.z+'px');
 $('#imageViewLink').hide();
+
+{% comment %}
+The view info needs to be updated on zoom, and window resize events - 
+so probably need to go into:
+webgateway/static/webgateway/js/weblitz-viewport.js
+webgateway/static/webgateway/js/jquery-plugin-viewportImage.js
+webgateway/templates/webgateway/omero_image.html
+
+Styling needs to be cleaned up (and only the first two lines printed, the 
+latter two are just debug info
+{% endcomment %}
+vp = viewport.getViewportSizes();
+viewStatus="<div class='viewStatus'>Image visible on screen<br>Width: "+vp.wp.toFixed(0)+"px "+vp.wr.toFixed(2)+" &Aring;<br>Height: "+vp.hp.toFixed(0)+"px "+vp.hr.toFixed(2)+" &Aring;<br>w: "+vp.w2+"<br>h: "+vp.h2+"<br>3 "+vp.w3+" "+vp.h3+"<br>zoom: "+vp.zoom+"</div>";
+
+$('#wblitz-workarea').append(viewStatus);
 
 {% endblock after_callback %}
 
