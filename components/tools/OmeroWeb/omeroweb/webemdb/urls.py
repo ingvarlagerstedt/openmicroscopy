@@ -73,4 +73,5 @@ urlpatterns = patterns('',
     # tomogram viewer (customised Image Viewer for single T and C)
     url( r'^(?P<emdb_entry>\d{4})_sliceviewer/$', views.sliceviewer, name='webemdb_sliceviewer' ),
     imgData,
+    url( r'^$', views.index, name="emdbindex" ),
 )
