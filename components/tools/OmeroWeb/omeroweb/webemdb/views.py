@@ -1146,7 +1146,6 @@ def sliceviewer (request, emdb_entry, **kwargs):
     """ We need handle one, multiple, and no match on the image_name """
 
     conn = getConnection(request)
-    logger.warning("In sliceviewer conn: %s " % conn)
     if conn is None or not conn.isConnected():
          return HttpResponseRedirect(reverse('webemdb_login'))
  
@@ -1168,15 +1167,11 @@ def sliceviewer (request, emdb_entry, **kwargs):
     return webgateway_views.full_viewer(request, image.id, _conn=conn, **kwargs)
     
 def imgData (request, iid, server_id=None, **kwargs):
-    logger.warning("In imgData before conn, iid: %s " % iid)
     conn = getConnection(request)
-    logger.warning("In imgData conn: %s " % conn)
     kwargs['server_id'] = None
     kwargs['iid'] = iid
     if conn is None or not conn.isConnected():
        return HttpResponseRedirect(reverse('webemdb_login'))
-    #return webgateway_views.imageData_json(request, iid, _conn=conn, **kwargs)
-    #return webgateway_views.imageData_json(request, _conn=conn, **kwargs)
     rv = webgateway_views.imageData_json(request, _conn=conn, **kwargs)
     return HttpResponse(rv, mimetype='application/javascript')
 
