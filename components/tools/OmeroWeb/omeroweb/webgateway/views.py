@@ -1522,9 +1522,8 @@ def imageMarshal (image, key=None):
             rv = None
     return rv
 
-#@jsonp
-def imageData_json (request, _conn=None, **kwargs):
-#def imageData_json (request, server_id=None, _conn=None, _internal=False, **kwargs):
+@jsonp
+def imageData_json (request, server_id=None, _conn=None, _internal=False, **kwargs):
     """
     Get a dict with image information
     TODO: cache
