@@ -74,4 +74,6 @@ urlpatterns = patterns('',
     url( r'^(?P<emdb_entry>\d{4})_sliceviewer/$', views.sliceviewer, name='webemdb_sliceviewer' ),
     imgData,
     url( r'^$', views.index, name="emdbindex" ),
+    url( r'^render_image/(?P<iid>[0-9]+)/(?P<z>[0-9]+)/(?P<t>[0-9]+)/$', views.render_image, name="emdb_render_image"),
+
 )

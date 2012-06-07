@@ -1170,7 +1170,16 @@ def imgData (request, iid, server_id=None, **kwargs):
     logger.warning("In imgData before conn, iid: %s " % iid)
     conn = getConnection(request)
     logger.warning("In imgData conn: %s " % conn)
+    kwargs['server_id'] = None
+    kwargs['iid'] = iid
     if conn is None or not conn.isConnected():
        return HttpResponseRedirect(reverse('webemdb_login'))
-    return webgateway_views.imageData_json(request, iid, _conn=conn, **kwargs)
+    #return webgateway_views.imageData_json(request, iid, _conn=conn, **kwargs)
+    #return webgateway_views.imageData_json(request, _conn=conn, **kwargs)
+    rv = webgateway_views.imageData_json(request, _conn=conn, **kwargs)
+    return HttpResponse(rv, mimetype='application/javascript')
 
+def render_image (request, iid, z, t, **kwargs):
+
+    conn = getConnection(request)
+    return webgateway_views.render_image(request, iid, z, t, _conn=conn, **kwargs)
