@@ -4,6 +4,7 @@ from django.views.static import serve
 from omeroweb.webemdb import views
 import os
 
+imgData = ( r'^imgData/(?P<iid>[^/]+)/(?:(?P<key>[^/]+)/)?$', views.imgData )
 urlpatterns = patterns('',
     url( r'^$', views.index, name='webemdb_index' ),
     url( r'^logout/$', views.logout, name='webemdb_logout' ),
@@ -71,4 +72,5 @@ urlpatterns = patterns('',
     
     # tomogram viewer (customised Image Viewer for single T and C)
     url( r'^(?P<emdb_entry>\d{4})_sliceviewer/$', views.sliceviewer, name='webemdb_sliceviewer' ),
+    imgData,
 )

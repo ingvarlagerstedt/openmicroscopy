@@ -1137,14 +1137,18 @@ def image_viewer (request, iid, **kwargs):
         return HttpResponseRedirect(reverse('webemdb_login'))
     
     kwargs['viewport_server'] = '/webclient'
+    #kwargs['viewport_server'] = '/webemdb'
     
     return webgateway_views.full_viewer(request, iid, _conn=conn, **kwargs)
 
 def sliceviewer (request, emdb_entry, **kwargs):
     """ We need handle one, multiple, and no match on the image_name """
 
-    conn = getConnection(request)
-    
+    #conn = getConnection(request)
+    conn = getBlitzConnection (request, useragent="OMERO.webemdb")
+    if conn is None or not conn.isConnected():
+         return HttpResponseRedirect(reverse('webemdb_login'))
+ 
     image_name = "emd_%s.map" % emdb_entry
     images = conn.getObjects("Image", attributes={'name': image_name})
 
@@ -1158,6 +1162,15 @@ def sliceviewer (request, emdb_entry, **kwargs):
         logger.debug('sliceviewer: No Image named %s' % image_name)
         raise Http404
 
+    kwargs['viewport_server'] = '/webemdb'
     kwargs['template'] = 'webemdb/browse/sliceviewer.html'
     return webgateway_views.full_viewer(request, image.id, _conn=conn, **kwargs)
     
+def imgData (request, iid, **kwargs):
+   #conn = getConnection(request)
+   conn = getBlitzConnection (request, useragent="OMERO.webemdb")
+   if conn is None or not conn.isConnected():
+       return HttpResponseRedirect(reverse('webemdb_login'))
+   return webgateway_views.imgData(request, iid, _conn=conn, **kwargs)
+   #return webgateway_views.imageData_json(request, iid, _conn=conn, **kwargs)
+
