@@ -9,6 +9,7 @@ from django.core.cache import cache
 from omeroweb.webgateway.views import getBlitzConnection, _session_logout
 from omeroweb.webgateway import views as webgateway_views
 from omeroweb.webadmin.custom_models import Server
+from omeroweb.webclient import webclient_gateway
 
 from omeroweb.feedback.views import handlerInternalError
 import settings
