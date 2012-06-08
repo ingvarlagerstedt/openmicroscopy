@@ -81,20 +81,5 @@ iSize = viewport.getSizes();
 $('#z-count-label').html(iSize.z+'px');
 $('#imageViewLink').hide();
 
-{% comment %}
-The view info needs to be updated on zoom, and window resize events - 
-so probably need to go into:
-webgateway/static/webgateway/js/weblitz-viewport.js
-webgateway/static/webgateway/js/jquery-plugin-viewportImage.js
-webgateway/templates/webgateway/omero_image.html
-
-Styling needs to be cleaned up (and only the first two lines printed, the 
-latter two are just debug info
-{% endcomment %}
-vp = viewport.getViewportSizes();
-viewStatus="<div class='viewStatus'>Image visible on screen<br>Width: "+vp.wp.toFixed(0)+"px "+vp.wr.toFixed(2)+" &Aring;<br>Height: "+vp.hp.toFixed(0)+"px "+vp.hr.toFixed(2)+" &Aring;<br>w: "+vp.w2+"<br>h: "+vp.h2+"<br>3 "+vp.w3+" "+vp.h3+"<br>zoom: "+vp.zoom+"</div>";
-
-$('#wblitz-workarea').append(viewStatus);
-
 {% endblock after_callback %}
 
