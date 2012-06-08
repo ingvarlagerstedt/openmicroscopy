@@ -328,6 +328,13 @@ $.fn.viewportImage = function(options) {
       this.setZoom(parseInt(increment));
     }
 
+    this.getViewSize = function() {
+       var rv = {};
+       rv.width = wrapwidth;
+       rv.height = wrapheight;
+       return rv;
+    }
+
     /**
      * Handle Zoom by mousewheel (IE)
      */

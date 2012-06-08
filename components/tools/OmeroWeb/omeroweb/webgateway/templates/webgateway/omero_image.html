@@ -85,6 +85,17 @@
     }
     /* Zoom window */
     viewport.setZoom(percent);
+    setViewSizes();
+  }
+
+  function setZoomToFit() {
+     viewport.setZoomToFit();
+     setViewSizes();
+  }
+
+  function setZoom(percent) {
+     viewport.setZoom(percent);
+     setViewSizes();
   }
 
   function hidePicker () {
@@ -125,6 +136,8 @@
 
     zl.css('top', h/2 - (zl.height()/2));
     tl.css({top: h-tl.height()+15, left: (w/2)+dim.left - (tl.width()/2)});
+
+    setViewSizes();
   };
 
   var getMetadata = function () {
@@ -423,6 +436,8 @@
     $('#wblitz-t-count').html(viewport.getTCount());
     $('#wblitz-z-count').html(viewport.getZCount());
 
+    setViewSizes();
+
     if(viewport.loadedImg.rdefs.invertAxis) {
       $('#z-axis-legend').attr('src', '{% static "webgateway/img/t_axis_revert.gif" %}');
       $('#t-axis-legend').attr('src', '{% static "webgateway/img/z_axis_revert.gif" %}');
@@ -436,6 +451,17 @@
     }
   };
   
+  /**
+  * Set the width and height values
+  */
+  var setViewSizes = function () {
+    var vp = viewport.getViewportSizes();
+    $('#wblitz-w-px').html(vp.wp.toFixed(0));
+    $('#wblitz-w-real').html(vp.wr.toFixed(0));
+    $('#wblitz-h-px').html(vp.hp.toFixed(0));
+    $('#wblitz-h-real').html(vp.hr.toFixed(0));
+  };
+
   /**
   *     ROI load & table methods 
   */
@@ -981,10 +1007,10 @@
             <input type="text" class="spin-button" id="wblitz-zoom" value="100" onchange="zoomCheck(this)" size="5" />
             <button id="full-size"
                     title="1:1"
-                    onclick="viewport.setZoom(100)" ></button>
+                    onclick="setZoom(100)" ></button>
             <button id="full-screen"
                     title="full screen"
-                    onclick="viewport.setZoomToFit()"></button>
+                    onclick="setZoomToFit()"></button>
           </div>
           <div class="odd row">
             <label for="wblitz-lp-enable">Line Plot</label> <input id="wblitz-lp-enable" type="checkbox" onclick="editLinePlot(this.checked)" />
@@ -1024,6 +1050,11 @@
                 <span id="wblitz-t-curr-display">|
                     T: <span id="wblitz-t-curr">1</span>/<span id="wblitz-t-count">1</span>
                 </span>
+                <div id="viewStatus">
+                  Width: <span id="wblitz-w-px">?</span> px <span id="wblitz-w-real">?</span> &Aring;
+                  <br />
+                  Height: <span id="wblitz-h-px">?</span> px <span id="wblitz-h-real">?</span> &Aring;
+                </div>
             </span>
           </div>
           <div class="odd row">
@@ -1270,6 +1301,7 @@
     // we can bind events to viewportimg for roi_display-plugin to trigger (plugin not created yet)
     viewport.viewportimg.bind("shape_click", handle_shape_selection);
     viewport.viewportimg.bind("rois_loaded", handle_rois_loaded);
+    $('#viewStatus').hide();
     
     /* And we're done! */
     {% block after_onload %}{% endblock after_onload %}

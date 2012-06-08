@@ -59,6 +59,7 @@ $('#wblitz-t-curr-display').hide();
 $('#roi_controls').hide();
 
 $('#imageViewLink').hide();
+$('#viewStatus').show();
 
 {% endblock after_onload %}
 
@@ -80,6 +81,7 @@ $('#wblitz-rmodel').parent().hide();  // color toggle - hide again in case it go
 iSize = viewport.getSizes();
 $('#z-count-label').html(iSize.z+'px');
 $('#imageViewLink').hide();
+$('#viewStatus').show();
 
 {% endblock after_callback %}
 

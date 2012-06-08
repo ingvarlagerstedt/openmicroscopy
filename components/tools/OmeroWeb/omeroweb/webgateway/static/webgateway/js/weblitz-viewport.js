@@ -761,30 +761,32 @@ jQuery._WeblitzViewport = function (container, server, options) {
   }
 
   this.getViewportSizes = function() {
-    // Calculate currently displayed area in pixel and real dimensions
-    var zoom = _this.viewportimg.get(0).getZoom(); // _this.getZoom() not in sync
+    // Calculate currently displayed area in pixels and real dimensions
+    var zoom = _this.viewportimg.get(0).getZoom(); 
+    var vwSize = _this.viewportimg.get(0).getViewSize(); 
     var px = _this.getPixelSizes();
-    var sz = getSizeDict();
-    var w2 = _this.viewportimg.width() / (zoom * 0.01);
-    var h2 = _this.viewportimg.height() / (zoom * 0.01);
-
-    if (w2 < sz.width) {
-      rv.wp = w2;
-    } else {
-      rv.wp = sz.width;
+    var sz = _this.loadedImg.size;
+    var rv = {};
+    if (typeof sz === "undefined") {
+      // On initial resize not everything is set
+      rv.wp = rv.wr = rv.hp = rv.hr = 0;
+      return rv;
     }
-    if (h2 < sz.height) {
-      rv.hp = h2;
+   
+    var w = sz.width * zoom * 0.01;
+    var h = sz.height * zoom * 0.01;
+    if (w < vwSize.width) {
+      rv.wp = sz.width;
     } else {
+      rv.wp = vwSize.width / (zoom * 0.01);
+    }
+    if (h < vwSize.height) {
       rv.hp = sz.height;
+    } else {
+      rv.hp = vwSize.height / (zoom * 0.01);
     }
     rv.wr = rv.wp * px.x;
     rv.hr = rv.hp * px.y;
-    rv.w2 = w2;
-    rv.h2 = h2;
-    rv.w3 = sz.width;
-    rv.h3 = sz.height;
-    rv.zoom = zoom;
     return rv;
   }
      
