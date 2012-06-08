@@ -1179,3 +1179,13 @@ def render_image (request, iid, z, t, **kwargs):
 
     conn = getConnection(request)
     return webgateway_views.render_image(request, iid, z, t, _conn=conn, **kwargs)
+
+def render_row_plot (request, iid, z, t, y, share_id=None, w=1, **kwargs):
+    """ Plot of intensity for a row of pixels. Delegates to webgateway """
+    conn = getConnection(request)
+    return webgateway_views.render_row_plot(request, iid=iid, z=z, t=t, y=y, w=w, _conn=conn, **kwargs)
+
+def render_col_plot (request, iid, z, t, x, share_id=None, w=1, **kwargs):
+    """ Plot of intenisty for a row of pixels. Delegates to webgateway """
+    conn = getConnection(request)
+    return webgateway_views.render_col_plot(request, iid=iid, z=z, t=t, x=x, w=w, _conn=conn, **kwargs)
