@@ -971,16 +971,16 @@
           <div class="even row">
               <!-- multiselect hidden for big images in jquery-plugin-viewportImage.js -->
             <div class="multiselect selected">
-              Normal
-              <input type="radio" value="normal" name="wblitz-proj" onclick="return setProjection(this);" />
+              <label for="wblitz-proj-normal" title="show single slice">Normal</label>
+              <input type="radio" value="normal" name="wblitz-proj" id="wblitz-proj-normal" onclick="return setProjection(this);" />
             </div>
             <div class="multiselect">
-              Max Intensity
-              <input type="radio" value="intmax" name="wblitz-proj" onclick="return setProjection(this);" />
+              <label for="wblitz-proj-max-intensity" title="max intensity in stack">Max Intensity</label>
+              <input type="radio" value="intmax" name="wblitz-proj" id="wblitz-proj-max-intensity" onclick="return setProjection(this);" />
             </div>
             <div class="multiselect">
-              Split Channel
-              <input type="radio" value="split" name="wblitz-proj" onclick="return setProjection(this);" />
+              <label for="wblitz-proj-split-channel" title="show slit channel">Split Channel</label>
+              <input type="radio" value="split" name="wblitz-proj" id="wblitz-proj-split-channel" onclick="return setProjection(this);" />
             </div>
             <!--select id="wblitz-proj" onchange="viewport.setProjection(this.item(this.selectedIndex).value);">
               <option value="normal">Normal</option>
@@ -989,7 +989,7 @@
             </select-->
           </div>
           <div class="odd row">
-            <label for="wblitz-quality" class="odd">Quality</label>
+            <label for="wblitz-quality" class="odd" title="image quality - differences tend to only be noticable at large scale-up">Quality</label>
             <!-- br /><input type="radio" name="wblitz-quality" value="1.0"> High</input>
             <br /><input type="radio" name="wblitz-quality" value="0.9" checked="checked"> Normal</input>
             <br /><input type="radio" name="wblitz-quality" value="0.5"> Low</input -->
@@ -1003,14 +1003,14 @@
             <label for="wblitz-zoom">Zoom</label><br />
             <input type="text" class="spin-button" id="wblitz-zoom" value="100" onchange="zoomCheck(this)" size="5" />
             <button id="full-size"
-                    title="1:1"
+                    title="image pixel equals screen pixel"
                     onclick="setZoom(100)" ></button>
             <button id="full-screen"
-                    title="full screen"
+                    title="fit image in screen"
                     onclick="setZoomToFit()"></button>
           </div>
           <div class="odd row">
-            <label for="wblitz-lp-enable">Line Plot</label> <input id="wblitz-lp-enable" type="checkbox" onclick="editLinePlot(this.checked)" />
+            <label for="wblitz-lp-enable" title="add histogram for single line in image">Line Plot</label> <input id="wblitz-lp-enable" type="checkbox" onclick="editLinePlot(this.checked)" />
             <div id="wblitz-lp-wrap" style="display: none">
               <div>Axis: 
                 <select id="wblitz-lp-axis-select" onchange="prepLinePlot(this.options[this.options.selectedIndex].value)">
@@ -1024,7 +1024,7 @@
               <div id="wblitz-lp-cur"></div>
             </div>
           </div>
-          <h1>Rendering Details</h1>
+          <h1>Rendering Detail</h1>
           <div class="odd row">
             <label for="wblitz-channels-box">Channels</label> - <a href="#" onclick="$('#rdef-postit').toggle(); return false;">Edit</a><br />
             <span id="wblitz-channels-box"></span>
@@ -1047,7 +1047,7 @@
                 <span id="wblitz-t-curr-display">|
                     T: <span id="wblitz-t-curr">1</span>/<span id="wblitz-t-count">1</span>
                 </span>
-                <div id="viewStatus">
+                <div id="viewStatus" title="current height and width in pixels and &Aring;ngstr&ouml;ms">
                   Width: <span id="wblitz-w-px">?</span> px <span id="wblitz-w-real">?</span> &Aring;
                   <br />
                   Height: <span id="wblitz-h-px">?</span> px <span id="wblitz-h-real">?</span> &Aring;
