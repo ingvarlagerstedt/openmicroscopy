@@ -368,6 +368,7 @@ $.fn.viewportImage = function(options) {
 
     /**
      * Handle panning by mouse drag
+     * Zoom left mouse
      */
 
     var ondrag = false;
@@ -384,7 +385,6 @@ $.fn.viewportImage = function(options) {
     .mousedown(function (e) {
       drag_px = e.screenX;
       drag_py = e.screenY;
-      //jQuery(this).css('cursor', 'move');
       jQuery(this).addClass('ondrag');
       ondrag = true;
       if (clickinterval != null) {
@@ -398,7 +398,6 @@ $.fn.viewportImage = function(options) {
         ondrag = false;
         jQuery(this).removeClass('ondrag');
         return false;
-        //jQuery(this).css('cursor', 'default');
       }
     })
     .mouseout(function (e) {
@@ -406,17 +405,36 @@ $.fn.viewportImage = function(options) {
         ondrag = false;
         jQuery(this).removeClass('ondrag');
         return false;
-        //jQuery(this).css('cursor', 'default');
       }
     })
     .mousemove(function (e) {
       if (ondrag) {
-        self.doMove(e.screenX-drag_px, e.screenY-drag_py);
-        drag_px = e.screenX;
-        drag_py = e.screenY;
+        if (e.shiftKey && _this.isLeft(e)) {
+          if (e.screenY-drag_py > 0)
+            _this.doZoom(-1, true);
+          else if (e.screenY-drag_py < 0)
+            _this.doZoom(1, true);
+          drag_py = e.screenY;
+        } else {
+          self.doMove(e.screenX-drag_px, e.screenY-drag_py);
+          drag_px = e.screenX;
+          drag_py = e.screenY;
+        }
         return false;
       }
     });
+
+    this.isLeft = function(e) {
+      // Check which button that is pressed
+      // IE9+ and other browsers, Netscape might fail
+      if ('which' in e) {
+        if (e.which == 1) return true;
+        return false;
+      } else if ('button' in e) {
+        if (e.button & 1) return true;
+      }
+      return false;
+    }
 
     this.getBigImageContainer = function () {
         return viewerBean;
