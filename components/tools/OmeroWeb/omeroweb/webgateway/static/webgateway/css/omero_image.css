@@ -60,8 +60,7 @@ hr {
   margin: 0px;
   padding: 0 0 0 0;
   clear: both;
-  background: url('../img/hr_sep_1.gif') repeat-x center;
-  height: 10px;
+  height: 1px;
 }
 
 #wblitz { 
@@ -108,7 +107,7 @@ hr {
 }
 
 .odd {
-  background-color: #eee;   
+  background-color: #fff;   
 }
 
 .even {
