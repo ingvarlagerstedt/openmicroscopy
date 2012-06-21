@@ -28,6 +28,7 @@
     <link rel="stylesheet" type="text/css" href="{% static "webgateway/css/3rdparty/jquery-ui-1.7.2.custom.css" %}" media="all" />
     <link rel="stylesheet" type="text/css" href="{% static "webgateway/css/omero_image.css" %}" media="all" />
     <link rel="stylesheet" type="text/css" href="{% static "webgateway/css/3rdparty/panojs.css" %}" media="all" />
+    <link rel="stylesheet" type="text/css" href="{% static "webgateway/css/print_image.css" %}" media="print" />
 {% endblock %}
 
 {% block extra_js %}
@@ -1081,7 +1082,8 @@
           <hr>
           <div id="imagePrint" class="even row">
             <button id="print-image" title="print the current image"
-              onclick=alert('ToBeImplemented'); >Print Image</button>
+              onclick="window.print();return false;" >Print Image</button>
+
           </div>
         </div>
             

@@ -25,7 +25,7 @@ $.fn.viewportImage = function(options) {
     var insideId = this.id + '-vpi';
 
     var image = jQuery(this);
-    image.addClass('weblitz-viewport-img');
+    image.addClass('weblitz-viewport-img print');
     image.wrap('<div id="'+insideId+'" style="display: inline; position: absolute;" class="draggable"></div>');
     var dragdiv = jQuery('#'+insideId);
     var dragdiv_dom = dragdiv.get(0);
