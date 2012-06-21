@@ -103,7 +103,7 @@ def isAdminConnected (f):
             return HttpResponseRedirect(reverse("walogin")+(("?url=%s") % (url)))
         
         if not conn.isAdmin():
-            return page_not_found(request, "404.html")
+            return page_not_found(request, "404a.html")
         kwargs["conn"] = conn
         return f(request, *args, **kwargs)
 
@@ -129,10 +129,10 @@ def isOwnerConnected (f):
         
         if kwargs.get('gid') is not None:
             if not conn.isOwner(kwargs.get('gid')):
-                return page_not_found(request, "404.html")
+                return page_not_found(request, "404a.html")
         else:
             if not conn.isOwner():
-                return page_not_found(request, "404.html")
+                return page_not_found(request, "404a.html")
         kwargs["conn"] = conn
         return f(request, *args, **kwargs)
 

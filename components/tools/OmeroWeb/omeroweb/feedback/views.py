@@ -148,7 +148,7 @@ def handler404(request):
                     'status_code': 404,
                     'request': request
                 })
-    return page_not_found(request, "404.html")
+    return page_not_found(request, "404a.html")
 
 def handlerInternalError(error):
     template = "error.html"
