@@ -45,6 +45,7 @@ $('#wblitz-image-t-count').parent().parent().hide();
 
 $('div.multiselect:last').hide();  // hide 'split-view' option
 
+$('#wblitz-quality-group').hide(); // Quality option - difficult to notice any change
 $('#wblitz-channels-box').hide();  // channel toggle buttons
 
 $('#wblitz-rmodel').parent().hide();  // color toggle
@@ -53,7 +54,7 @@ var rendering = $('label[for="wblitz-channels-box"]').parent();
 var editLink = rendering.children('a');
 rendering.html('');
 rendering.append(editLink);
-editLink.text("Edit Rendering");
+editLink.text("Select Density Range");
 
 // remove T: 1/1 display
 $('#wblitz-t-curr-display').hide();
@@ -82,6 +83,7 @@ $('#rdef-postit table tr.rdef-window').show();
 $('#wblitz-rmodel').parent().hide();  // color toggle - hide again in case it got shown
 iSize = viewport.getSizes();
 $('#z-count-label').html(iSize.z+'px');
+$('#wblitz-quality-group').hide(); // Quality option - difficult to notice any change
 $('#imageViewLink').hide();
 $('#viewStatus').show();
 

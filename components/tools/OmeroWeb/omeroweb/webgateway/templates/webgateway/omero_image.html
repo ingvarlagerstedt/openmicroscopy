@@ -439,7 +439,7 @@
       $('#z-axis-legend').attr('src', '{% static "webgateway/img/t_axis_revert.gif" %}');
       $('#t-axis-legend').attr('src', '{% static "webgateway/img/z_axis_revert.gif" %}');
     } else {
-      $('#z-axis-legend').attr('src', '{% static "webgateway/img/z_axis.gif" %}');
+      $('#z-axis-legend').attr('src', '{% static "webgateway/img/z_axis2.gif" %}');
       $('#t-axis-legend').attr('src', '{% static "webgateway/img/t_axis.gif" %}');
     };
 
@@ -925,7 +925,7 @@
     </div>
 
     <div id="rdef-postit" class="postit" style="width: 480px">
-      <h1> Rendering Details </h1>
+      <h1>Select Density Range</h1>
         <div id="rdef-active-area">
         <a id="rdef-postit-help" href="#" onclick="return showChannelWindowHelp();"><img src="{% static "webgateway/img/question.png" %}" alt="Show help on channel window ranges" /></a>
         <label for="rd-wblitz-rmodel">Render as Color</label>
@@ -975,7 +975,7 @@
               <input type="radio" value="normal" name="wblitz-proj" id="wblitz-proj-normal" onclick="return setProjection(this);" />
             </div>
             <div class="multiselect">
-              <label for="wblitz-proj-max-intensity" title="max intensity in stack">Max Intensity</label>
+              <label for="wblitz-proj-max-intensity" title="max intensity projection in stack">Max Intensity</label>
               <input type="radio" value="intmax" name="wblitz-proj" id="wblitz-proj-max-intensity" onclick="return setProjection(this);" />
             </div>
             <div class="multiselect">
@@ -988,7 +988,7 @@
               <option value="split">Split Channel</option>
             </select-->
           </div>
-          <div class="odd row">
+          <div id="wblitz-quality-group" class="odd row">
             <label for="wblitz-quality" class="odd" title="image quality - differences tend to only be noticable at large scale-up">Quality</label>
             <!-- br /><input type="radio" name="wblitz-quality" value="1.0"> High</input>
             <br /><input type="radio" name="wblitz-quality" value="0.9" checked="checked"> Normal</input>
@@ -999,8 +999,9 @@
               <option value="0.5">Low</option>
             </select>
           </div>
+          <hr>
           <div class="even row">
-            <label for="wblitz-zoom">Zoom</label><br />
+            <label for="wblitz-zoom" title="zoom in percent, both shift-left mouse button and scrollwheel can be used to zoom">Zoom</label><br />
             <input type="text" class="spin-button" id="wblitz-zoom" value="100" onchange="zoomCheck(this)" size="5" />
             <button id="full-size"
                     title="image pixel equals screen pixel"
@@ -1009,6 +1010,7 @@
                     title="fit image in view port"
                     onclick="setZoomToFit()"></button>
           </div>
+          <hr>
           <div class="odd row">
             <label for="wblitz-lp-enable" title="add histogram for single line in image">Line Plot</label> <input id="wblitz-lp-enable" type="checkbox" onclick="editLinePlot(this.checked)" />
             <div id="wblitz-lp-wrap" style="display: none">
@@ -1024,8 +1026,9 @@
               <div id="wblitz-lp-cur"></div>
             </div>
           </div>
-          <h1>Rendering Detail</h1>
-          <div class="odd row">
+          <!-- <h1>Rendering Detail</h1> -->
+          <hr>
+          <div class="even row">
             <label for="wblitz-channels-box">Channels</label> - <a href="#" onclick="$('#rdef-postit').toggle(); return false;">Edit</a><br />
             <span id="wblitz-channels-box"></span>
           </div>
@@ -1039,21 +1042,24 @@
 	    {% endif %}
             <br />
           </div>
-            <h1>Current Image</h1>
+          <hr>
+          <h1>Image Details</h1>
           <div class="even row">
             <span style="font-size: 0.9em">
-                <!--<span id="wblitz-shortname" style="white-space: nowrap;"></span><br />-->
-                Z: <span id="wblitz-z-curr">?</span>/<span id="wblitz-z-count">?</span> 
-                <span id="wblitz-t-curr-display">|
+                <div id="Zstatus" title="current slice/number of slices">
+                  Z: <span id="wblitz-z-curr">?</span>/<span id="wblitz-z-count">?</span> 
+                  <span id="wblitz-t-curr-display">|
                     T: <span id="wblitz-t-curr">1</span>/<span id="wblitz-t-count">1</span>
-                </span>
-                <div id="viewStatus" title="current height and width in pixels and &Aring;ngstr&ouml;ms">
+                  </span>
+                </div>
+                <div id="viewStatus" title="current height and width of viewed area in pixels and &Aring;ngstr&ouml;ms">
                   Width: <span id="wblitz-w-px">?</span> px <span id="wblitz-w-real">?</span> &Aring;
                   <br />
                   Height: <span id="wblitz-h-px">?</span> px <span id="wblitz-h-real">?</span> &Aring;
                 </div>
             </span>
           </div>
+          <hr>
           <div class="odd row">
             <a href="#" onclick="$('#metadata-postit').toggle(); return false;">Image Information</a><br />
           </div>
@@ -1072,11 +1078,16 @@
           </div>
 {% endblock roi_buttons %}
           {% block current_image_tools %}{% endblock %}
+          <hr>
+          <div id="imagePrint" class="even row">
+            <button id="print-image" title="print the current image"
+              onclick=alert('ToBeImplemented'); >Print Image</button>
+          </div>
         </div>
             
         <!-- Image Viewport -->
         <div id="weblitz-viewport"></div>
-        <img id="z-axis-legend" src="{% static "webgateway/img/z_axis.gif" %}" />
+        <img id="z-axis-legend" src="{% static "webgateway/img/z_axis2.gif" %}" />
         <img id="t-axis-legend" src="{% static "webgateway/img/t_axis.gif" %}" />
         <div class="figure-box-holder">
         </div>
