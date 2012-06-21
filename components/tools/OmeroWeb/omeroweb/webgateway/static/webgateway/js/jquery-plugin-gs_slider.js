@@ -67,12 +67,12 @@ $.fn.gs_slider = function(cfg) {
       var slider = jQuery("#"+lineId);
 
       /* The buttons */
-      slider.before('<div id="'+btnPlayUpId+'" class="slider-btn-playup"></div>');//&nbsp;</div>');
-      slider.before('<div id="'+btnUpId+'" class="slider-btn-up"></div>');//&nbsp;</div>');
+      slider.before('<div id="'+btnPlayUpId+'" title="play up" class="slider-btn-playup"></div>');//&nbsp;</div>');
+      slider.before('<div id="'+btnUpId+'" title="step up" class="slider-btn-up"></div>');//&nbsp;</div>');
       var btnup = jQuery("#"+btnUpId);
       var btnplayup = jQuery("#"+btnPlayUpId);
-      slider.after('<div id="'+btnDownId+'" class="slider-btn-down"></div>');//&nbsp;</div>');
-      slider.after('<div id="'+btnPlayDownId+'" class="slider-btn-playdown"></div>');//&nbsp;</div>');
+      slider.after('<div id="'+btnDownId+'" title="step down" class="slider-btn-down"></div>');//&nbsp;</div>');
+      slider.after('<div id="'+btnPlayDownId+'" title="play down" class="slider-btn-playdown"></div>');//&nbsp;</div>');
       var btndown = jQuery("#"+btnDownId);
       var btnplaydown = jQuery("#"+btnPlayDownId);
 
