@@ -760,6 +760,10 @@
         pos.top -= tooltip.height() + 20;
         tooltip.css(pos);
       }
+      // Why is this needed, the display style should have been inherited from .popped
+      var myDiv = document.getElementById(ttid);
+      myDiv.style.display = 'block';
+
       var auto = $('#' + ttid).find('.autoselect').get(0);
       if (auto) {
         auto.focus();
@@ -768,6 +772,11 @@
     }
   }
 
+  function hide_tooltip(self, ttid) {
+    var myDiv = document.getElementById(ttid);
+    myDiv.style.display = 'none';
+  }
+    
   function show_change(obj, val, klass) {
     if (obj.value != val) {
       $(obj).addClass(klass);
@@ -858,6 +867,13 @@
     </div>
  
     <!-- Floating boxes come on top -->
+    <div id="infoText" class="tooltipbox">
+      <table cellspacing="0">
+      <tr><td>Slice viewer info</td></tr>
+      <tr><td>Save image: Right click with the cursor over the image.  Exact option differ between browsers.</td></tr>
+      <tr><td>Print image: Use the 'Print Image' button, printing tend to work best in landscape mode.</td></tr>
+      </table>
+    </div>
     <div id="curr-link" class="tooltipbox">
       <table cellspacing="0">
         <tr>
@@ -1083,7 +1099,10 @@
           <div id="imagePrint" class="even row">
             <button id="print-image" title="print the current image"
               onclick="window.print();return false;" >Print Image</button>
-
+          </div>
+          <hr>
+          <div id="info" class="odd row">
+            <img id="sliceInfo" src="{% static "webgateway/img/question.png" %}" onmouseover="show_tooltip(this, 'infoText'); return false;" onmouseout="hide_tooltip(this, 'infoText');return false;">
           </div>
         </div>
             
@@ -1308,11 +1327,12 @@
     });
     
     
-    // we can bind events to viewportimg for roi_display-plugin to trigger (plugin not created yet)
+    // we can bind events to viewportimg for roi_isplay-plugin to trigger (plugin not created yet)
     viewport.viewportimg.bind("shape_click", handle_shape_selection);
     viewport.viewportimg.bind("rois_loaded", handle_rois_loaded);
     $('#viewStatus').hide();
-    
+    $('#infoText').hide();
+
     /* And we're done! */
     {% block after_onload %}{% endblock after_onload %}
 
