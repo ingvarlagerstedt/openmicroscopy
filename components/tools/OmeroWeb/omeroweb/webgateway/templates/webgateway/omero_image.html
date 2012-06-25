@@ -760,7 +760,7 @@
         pos.top -= tooltip.height() + 20;
         tooltip.css(pos);
       }
-      // Why is this needed, the display style should have been inherited from .popped
+      // Why is this needed - Iframe?, the display style should have been inherited from .popped
       var myDiv = document.getElementById(ttid);
       myDiv.style.display = 'block';
 
@@ -867,11 +867,23 @@
     </div>
  
     <!-- Floating boxes come on top -->
-    <div id="infoText" class="tooltipbox">
-      <table cellspacing="0">
-      <tr><td>Slice viewer info</td></tr>
-      <tr><td>Save image: Right click with the cursor over the image.  Exact option differ between browsers.</td></tr>
-      <tr><td>Print image: Use the 'Print Image' button, printing tend to work best in landscape mode.</td></tr>
+    <div id="infoText" class="tooltipbox" style="width:800px;height=500px">
+      <table cellpadding="3" cellspacing="1">
+      <tr><td colspan="2"><h1>Slice viewer info</h1></td></tr>
+      <tr><td>Select slice</td>
+        <td>You can select a slice by clicking/dragging the scrollbar.  Use the arrows to step up/down one slice, and the play buttons on the far ends of the scrollbar to automatically step through the stack.</td></tr>
+      <tr><td> Save image</td>
+        <td>Right click with the cursor over the image.  Exact option differs between browsers.</td></tr>
+      <tr><td>Print image</td>
+        <td>Use the 'Print Image' button, printing tends to work best in landscape mode.</td></tr>
+      <tr><td>Zoom</td>
+        <td>In addition to the controls in the UI, Shift-Left mouse button and mouse scroll wheel can be used for zooming. 1/1 means 1 pixel in the image corresponds to 1 pixel on the screen.</td></tr>
+      <tr><td>Image details</td>
+        <td>Z - Current/Total number of slices, Width/Height - what is currently visible in the viewport in pixels and &Aring;ngstr&ouml;ms.</td></tr>
+      <tr><td>Line plot</td>
+        <td>Add a histogram for a single line in the image, X or Y.  You can select a line by clicking in the image.  To see the line plot you may have to zoom out so that the whole image fits in the viewport.</td></tr>
+      <tr><td>Viewing options</td>
+        <td>Toogle between viewing a single slice and a max intensity projection for the stack.  The projection may take some time for large images and/or thick stacks.</td></tr>
       </table>
     </div>
     <div id="curr-link" class="tooltipbox">
@@ -1327,7 +1339,7 @@
     });
     
     
-    // we can bind events to viewportimg for roi_isplay-plugin to trigger (plugin not created yet)
+    // we can bind events to viewportimg for roi_display-plugin to trigger (plugin not created yet)
     viewport.viewportimg.bind("shape_click", handle_shape_selection);
     viewport.viewportimg.bind("rois_loaded", handle_rois_loaded);
     $('#viewStatus').hide();
