@@ -742,6 +742,17 @@
     syncRDCW();
   }
 
+
+  function show_tooltip2(self, ttid) {
+    var pos = $(self).parents('div').offset();
+    pos.top = "30px";
+    pos.left = "5px";
+    var tooltip = $('#' + ttid);
+    tooltip.css(pos);
+    var myDiv = document.getElementById(ttid);
+    myDiv.style.display = 'block';
+  }
+
   function show_tooltip(self, ttid) {
     var pos = $(self).parents('div').offset();
     pos.top += $(self).parents('div').height();
@@ -867,23 +878,30 @@
     </div>
  
     <!-- Floating boxes come on top -->
-    <div id="infoText" class="tooltipbox" style="width:800px;height=500px">
+    <div id="infoText" class="tooltipbox">
       <table cellpadding="3" cellspacing="1">
       <tr><td colspan="2"><h1>Slice viewer info</h1></td></tr>
-      <tr><td>Select slice</td>
-        <td>You can select a slice by clicking/dragging the scrollbar.  Use the arrows to step up/down one slice, and the play buttons on the far ends of the scrollbar to automatically step through the stack.</td></tr>
-      <tr><td> Save image</td>
-        <td>Right click with the cursor over the image.  Exact option differs between browsers.</td></tr>
-      <tr><td>Print image</td>
-        <td>Use the 'Print Image' button, printing tends to work best in landscape mode.</td></tr>
-      <tr><td>Zoom</td>
-        <td>In addition to the controls in the UI, Shift-Left mouse button and mouse scroll wheel can be used for zooming. 1/1 means 1 pixel in the image corresponds to 1 pixel on the screen.</td></tr>
-      <tr><td>Image details</td>
-        <td>Z - Current/Total number of slices, Width/Height - what is currently visible in the viewport in pixels and &Aring;ngstr&ouml;ms.</td></tr>
-      <tr><td>Line plot</td>
-        <td>Add a histogram for a single line in the image, X or Y.  You can select a line by clicking in the image.  To see the line plot you may have to zoom out so that the whole image fits in the viewport.</td></tr>
-      <tr><td>Viewing options</td>
-        <td>Toogle between viewing a single slice and a max intensity projection for the stack.  The projection may take some time for large images and/or thick stacks.</td></tr>
+      <tr class="odd"><td>Select slice</td>
+        <td>You can select a slice by clicking/dragging the scrollbar.  Use the buttons 
+          (<img src="{% static "webgateway/img/blue_arrow_up.gif" %}" alt="arrow up" /> 
+          <img src="{% static "webgateway/img/blue_arrow_down.gif" %}" alt="arrow down" /> ) 
+          to step up/down one slice, and the play buttons at the top and bottom of the scrollbar to automatically step through the stack.</td></tr>
+      <tr class="even"><td> Save image</td>
+        <td>Right-click with the cursor over the image.  Available options depends on your browser.</td></tr>
+      <tr class="odd"><td>Print image</td>
+        <td>Use the 'Print image' button; printing tends to work best in landscape mode.</td></tr>
+      <tr class="even"><td>Zoom</td>
+        <td>In addition to the controls in the left panel, shift-left drag or the mouse scroll wheel can be used for zooming. "1/1" means that 1 pixel in the image corresponds to 1 pixel on the screen.</td></tr>
+      <tr class="odd"><td>Image details</td>
+        <td>Z - Current/total number of slices; Width/Height - what is currently visible in the viewport in pixels and &Aring;ngstr&ouml;ms.</td></tr>
+      <tr class="even"><td>Line plot</td>
+        <td>Show a 1D density line plot for a single line in the image, horizontal or vertical.  You can select a line by clicking in the image.  To see the line plot you may have to zoom out so that the whole image fits in the viewport.</td></tr>
+      <tr class="odd"><td>Viewing options</td>
+        <td>Toggle between viewing a single slice and a max intensity projection for the stack.  The projection may take some time for large images and/or thick stacks.</td></tr>
+      <tr class="even"><td>Select density range</td>
+        <td>Select the range of density values to use for the image</td></tr>
+      <tr class="odd"><td>Image information</td>
+        <td>Show voxel sizes and dimensions for the whole volume</td></tr>
       </table>
     </div>
     <div id="curr-link" class="tooltipbox">
@@ -911,8 +929,8 @@
     </div>
     
     <div id="metadata-postit" class="postit">
-      <h1>Image Information</h1>
-      <h3 class="can-collapse">Basic Information</h3>
+      <h1>Image information</h1>
+      <h3 class="can-collapse">Basic information</h3>
       <div>
         <table cellspacing="0">
           <tr class="odd"><td class="title">Image name:&nbsp;</td><td id="wblitz-image-name"></td></tr>
@@ -928,8 +946,8 @@
       <div class="dimensions">
         <table cellspacing="0">
           <tr>
-            <th colspan="2" width="50%">Image Size</th>
-            <th colspan="2">Pixel Size</th>
+            <th colspan="2" width="50%">Image size</th>
+            <th colspan="2">Pixel size</th>
           </tr>
           <tr class="odd">
             <td class="title">X:&nbsp;</td><td><span id="wblitz-image-width"></span>px</td>
@@ -954,9 +972,9 @@
     </div>
 
     <div id="rdef-postit" class="postit" style="width: 480px">
-      <h1>Select Density Range</h1>
+      <h1>Select density range</h1>
         <div id="rdef-active-area">
-        <a id="rdef-postit-help" href="#" onclick="return showChannelWindowHelp();"><img src="{% static "webgateway/img/question.png" %}" alt="Show help on channel window ranges" /></a>
+        <a id="rdef-postit-help" href="#" onclick="return showChannelWindowHelp();"><img src="{% static "webgateway/img/help.png" %}" alt="Show help on channel window ranges" /></a>
         <label for="rd-wblitz-rmodel">Render as Color</label>
         <input id="rd-wblitz-rmodel" type="checkbox" onchange="return rdChanSelHelper(this);" />
         <table cellspacing="0">
@@ -996,7 +1014,28 @@
       <!-- Top Toolbox -->
         <!-- Zoom -->
         <div class="box">
-            <h1>Viewing Options</h1>
+          <div id="info" class="even row">
+            <img id="sliceInfo" src="{% static "webgateway/img/help.png" %}" onmouseover="show_tooltip2(this, 'infoText'); return false;" onmouseout="hide_tooltip(this, 'infoText');return false;">
+          </div>
+          <hr>
+          <h1>Image details</h1>
+          <div class="even row">
+            <span style="font-size: 0.9em">
+                <div id="Zstatus" title="current slice/number of slices">
+                  Z-slice: <span id="wblitz-z-curr">?</span> of <span id="wblitz-z-count">?</span> 
+                  <span id="wblitz-t-curr-display">|
+                    T: <span id="wblitz-t-curr">1</span>/<span id="wblitz-t-count">1</span>
+                  </span>
+                </div>
+                <div id="viewStatus" title="current height and width of viewed area in pixels and &Aring;ngstr&ouml;ms">
+                  Width: <span id="wblitz-w-px">?</span> px <span id="wblitz-w-real">?</span> &Aring;
+                  <br />
+                  Height: <span id="wblitz-h-px">?</span> px <span id="wblitz-h-real">?</span> &Aring;
+                </div>
+            </span>
+          </div>
+          <hr>
+          <h1>Viewing options</h1>
           <div class="even row">
               <!-- multiselect hidden for big images in jquery-plugin-viewportImage.js -->
             <div class="multiselect selected">
@@ -1004,7 +1043,7 @@
               <input type="radio" value="normal" name="wblitz-proj" id="wblitz-proj-normal" onclick="return setProjection(this);" />
             </div>
             <div class="multiselect">
-              <label for="wblitz-proj-max-intensity" title="max intensity projection for stack">Max Intensity</label>
+              <label for="wblitz-proj-max-intensity" title="max intensity projection for stack">Max intensity</label>
               <input type="radio" value="intmax" name="wblitz-proj" id="wblitz-proj-max-intensity" onclick="return setProjection(this);" />
             </div>
             <div class="multiselect">
@@ -1041,7 +1080,7 @@
           </div>
           <hr>
           <div class="odd row">
-            <label for="wblitz-lp-enable" title="add histogram for single line in image">Line Plot</label> <input id="wblitz-lp-enable" type="checkbox" onclick="editLinePlot(this.checked)" />
+            <label for="wblitz-lp-enable" title="show a 1D density line plot for single line in the image">Line plot</label> <input id="wblitz-lp-enable" type="checkbox" onclick="editLinePlot(this.checked)" />
             <div id="wblitz-lp-wrap" style="display: none">
               <div>Axis: 
                 <select id="wblitz-lp-axis-select" onchange="prepLinePlot(this.options[this.options.selectedIndex].value)">
@@ -1072,25 +1111,8 @@
             <br />
           </div>
           <hr>
-          <h1>Image Details</h1>
-          <div class="even row">
-            <span style="font-size: 0.9em">
-                <div id="Zstatus" title="current slice/number of slices">
-                  Z: <span id="wblitz-z-curr">?</span>/<span id="wblitz-z-count">?</span> 
-                  <span id="wblitz-t-curr-display">|
-                    T: <span id="wblitz-t-curr">1</span>/<span id="wblitz-t-count">1</span>
-                  </span>
-                </div>
-                <div id="viewStatus" title="current height and width of viewed area in pixels and &Aring;ngstr&ouml;ms">
-                  Width: <span id="wblitz-w-px">?</span> px <span id="wblitz-w-real">?</span> &Aring;
-                  <br />
-                  Height: <span id="wblitz-h-px">?</span> px <span id="wblitz-h-real">?</span> &Aring;
-                </div>
-            </span>
-          </div>
-          <hr>
           <div class="odd row">
-            <a href="#" onclick="$('#metadata-postit').toggle(); return false;">Image Information</a><br />
+            <a href="#" onclick="$('#metadata-postit').toggle(); return false;">Image information</a><br />
           </div>
           <div id="imageViewLink" class="even row">
                       <a href="#" onmouseover="this.href=viewport.getUrl('img_detail')"
@@ -1110,11 +1132,7 @@
           <hr>
           <div id="imagePrint" class="even row">
             <button id="print-image" title="print the current image"
-              onclick="window.print();return false;" >Print Image</button>
-          </div>
-          <hr>
-          <div id="info" class="odd row">
-            <img id="sliceInfo" src="{% static "webgateway/img/question.png" %}" onmouseover="show_tooltip(this, 'infoText'); return false;" onmouseout="hide_tooltip(this, 'infoText');return false;">
+              onclick="window.print();return false;" >Print image</button>
           </div>
         </div>
             

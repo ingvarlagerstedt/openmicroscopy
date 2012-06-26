@@ -242,15 +242,16 @@ hr {
 
 .tooltipbox {
   display: none;
-  position: absolute;
+  position: fixed;
   background-color: #eee;
   z-index: 10;
   border: solid 1px #bbb;
+  max-width: 800px;
+  max-height: 800px;
 }
 
 .tooltipbox td {
   font-size: 0.8em;
-  font-weight: bold;
 }
 
 .tooltipbox.popped { 
