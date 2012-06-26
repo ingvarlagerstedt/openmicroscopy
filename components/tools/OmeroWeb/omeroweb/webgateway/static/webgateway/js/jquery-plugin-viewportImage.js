@@ -209,7 +209,8 @@ $.fn.viewportImage = function(options) {
       /* Is the viewport bigger than the image ? */
       if (imagewidth <= wrapwidth) {
         /* Viewport wider than image, center horizontally */
-        left = (wrapwidth - imagewidth) / 2;
+        // left = (wrapwidth - imagewidth) / 2;
+        left = 0;
         panbars && panleft.display(false);
         panbars && panright.display(false);
       } else {
@@ -229,7 +230,8 @@ $.fn.viewportImage = function(options) {
       }
       if (imageheight <= wrapheight) {
         /* Viewport higher than image, center vertically */
-        top = (wrapheight - imageheight) / 2;
+        // top = (wrapheight - imageheight) / 2;
+        top = 0;
         panbars && pantop.display(false);
         panbars && panbottom.display(false);
       } else {
